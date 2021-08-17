@@ -27,27 +27,34 @@ dim(M)
 results <- biblioAnalysis(M, sep = ";")
 plot(x = results, k = 10, pause = FALSE)
 
+```
+![](Ecotox_bibliometrix/figs-data_read-1.png)<!-- -->
+![](Ecotox_bibliometrix/figs-data_read-2.png)<!-- -->
+![](Ecotox_bibliometrix/figs-data_read-3.png)<!-- -->
+![](Ecotox_bibliometrix/figs-data_read-4.png)<!-- -->
+![](Ecotox_bibliometrix/figs-data_read-5.png)<!-- -->
+```
 
 # Contries of coresponding authors
 results$CO %>% table %>% sort(decreasing=TRUE)
 # Country frequency for all authors?  SCP:Single Country Publications, MCP: Multiple Country Publications
 results$Country
 # Contries of  first author
-# identical to the results of corresponding authors? 要確�?.
+# identical to the results of corresponding authors? è¦ç¢ºèª?.
 metaTagExtraction(M, Field = "AU1_CO", sep = ";") %>% dplyr::select(AU1_CO) %>% table %>% sort(decreasing=TRUE)
 
 
 
 #### Detailed analysis #####
 ## frequencies of countries in each journal & year ##
-M2 <- M %>% mutate( AU1_CO = metaTagExtraction(M, Field = "AU1_CO", sep = ";") %>% dplyr::select(AU1_CO)  ) %>% #Au1_COはfirst authorの所属国と思うが要確�?
+M2 <- M %>% mutate( AU1_CO = metaTagExtraction(M, Field = "AU1_CO", sep = ";") %>% dplyr::select(AU1_CO)  ) %>% #Au1_COã¯first authorã®æ‰€å±žå›½ã¨æ€ã†ãŒè¦ç¢ºèª?
   as.data.frame
 
 Top5_country <- M2 %>% 
   mutate(AU1_CO=AU1_CO$AU1_CO) %>%
   group_by(SO,PY,AU1_CO) %>% # SO:Journal, PY: Year
-  summarize(Country_count = n() ) %>%   # Journal,Year,Countryごとにカウン�?
-  top_n(5,Country_count)   #Top5のみ抽出
+  summarize(Country_count = n() ) %>%   # Journal,Year,Countryã”ã¨ã«ã‚«ã‚¦ãƒ³ãƒ?
+  top_n(5,Country_count)   #Top5ã®ã¿æŠ½å‡º
 
 # plot
 Top5_country %>% 
@@ -57,4 +64,6 @@ Top5_country %>%
    facet_grid(~SO)+
    geom_bar(aes(fill=AU1_CO),stat = "identity")
   
+```
+![](Ecotox_bibliometrix/figs-data_read-6.png)<!-- -->
 ```
