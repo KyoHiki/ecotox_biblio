@@ -40,21 +40,21 @@ results$CO %>% table %>% sort(decreasing=TRUE)
 # Country frequency for all authors?  SCP:Single Country Publications, MCP: Multiple Country Publications
 results$Country
 # Contries of  first author
-# identical to the results of corresponding authors? è¦ç¢ºèª?.
+# identical to the results of corresponding authors?
 metaTagExtraction(M, Field = "AU1_CO", sep = ";") %>% dplyr::select(AU1_CO) %>% table %>% sort(decreasing=TRUE)
 
 
 
 #### Detailed analysis #####
 ## frequencies of countries in each journal & year ##
-M2 <- M %>% mutate( AU1_CO = metaTagExtraction(M, Field = "AU1_CO", sep = ";") %>% dplyr::select(AU1_CO)  ) %>% #Au1_COã¯first authorã®æ‰€å±žå›½ã¨æ€ã†ãŒè¦ç¢ºèª?
+M2 <- M %>% mutate( AU1_CO = metaTagExtraction(M, Field = "AU1_CO", sep = ";") %>% dplyr::select(AU1_CO)  ) %>% #Au1_CO is the country of first author's (or corresponding author?) affiliation. need to be checked.
   as.data.frame
 
 Top5_country <- M2 %>% 
   mutate(AU1_CO=AU1_CO$AU1_CO) %>%
   group_by(SO,PY,AU1_CO) %>% # SO:Journal, PY: Year
-  summarize(Country_count = n() ) %>%   # Journal,Year,Countryã”ã¨ã«ã‚«ã‚¦ãƒ³ãƒ?
-  top_n(5,Country_count)   #Top5ã®ã¿æŠ½å‡º
+  summarize(Country_count = n() ) %>%   # Journal,Year,Country
+  top_n(5,Country_count)   #Top5
 
 # plot
 Top5_country %>% 
